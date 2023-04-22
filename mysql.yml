@@ -1,0 +1,14 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      # 数据文件挂载
+      - ./data/mysql:/var/lib/mysql:z
+      # 初始化sql脚本挂载
+      - ./initdb.d:/docker-entrypoint-initdb.d:z

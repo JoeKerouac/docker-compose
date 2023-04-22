@@ -1,0 +1,23 @@
+version: '3'
+services:
+  namesrv:
+    image: apache/rocketmq:4.6.0
+    command: sh mqnamesrv
+    ports:
+      - "9876:9876"
+    environment:
+      JAVA_OPTS: "-Drocketmq.namesrv.domain=0.0.0.0"
+  broker:
+    image: apache/rocketmq:4.6.0
+    command: sh mqbroker -n namesrv:9876
+    ports:
+      - "10909:10909"
+      - "10911:10911"
+    environment:
+      JAVA_OPTS: "-Duser.home=/opt -Drocketmq.broker.bindIP=0.0.0.0"
+  dashboard:
+    image: apacherocketmq/rocketmq-dashboard:latest
+    ports:
+      - "8080:8080"
+    environment:
+      JAVA_OPTS: "-Drocketmq.namesrv.addr=namesrv:9876"
